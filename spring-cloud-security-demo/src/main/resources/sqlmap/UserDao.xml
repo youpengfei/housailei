@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.showcase.securitydemo.dao.UserDao">
+    <select id="findUsersByRoleId" parameterType="long"
+            resultMap="com.showcase.securitydemo.dao.base.BaseUserDao.BaseResultMap">
+        SELECT
+        <include refid="com.showcase.securitydemo.dao.base.BaseUserDao.Base_Column_List"/>
+        from user,user_role
+        where user_role.user_id = user.id and user_role.role_id=#{roleId}
+    </select>
+
+    <select id="findUsersByAuthId" parameterType="long"
+            resultMap="com.showcase.securitydemo.dao.base.BaseUserDao.BaseResultMap">
+        SELECT DISTINCT
+        (u.email),
+        <include refid="com.showcase.securitydemo.dao.base.BaseUserDao.Base_Column_List"/>
+        from user u inner join role_authority a
+        inner join user_role r
+        on
+        a.role_id = r.role_id
+        AND r.user_id = u.id
+        where a.authority_id = #{authId}
+    </select>
+
+</mapper>

@@ -1,0 +1,265 @@
+# ************************************************************
+# Sequel Pro SQL dump
+# Version 4541
+#
+# http://www.sequelpro.com/
+# https://github.com/sequelpro/sequelpro
+#
+# Host: 127.0.0.1 (MySQL 5.5.5-10.2.11-MariaDB)
+# Database: admin-auth
+# Generation Time: 2018-03-22 09:55:55 +0000
+# ************************************************************
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+
+# Dump of table authority
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `authority`;
+
+CREATE TABLE `authority` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT ' 主键自增',
+  `name` varchar(45) COLLATE utf8_bin NOT NULL,
+  `intro` varchar(100) COLLATE utf8_bin DEFAULT NULL,
+  `created_by` varchar(45) COLLATE utf8_bin DEFAULT NULL COMMENT '''创建人''',
+  `created_date` datetime DEFAULT NULL COMMENT '创建时间',
+  `last_modified_by` varchar(45) COLLATE utf8_bin DEFAULT NULL COMMENT '''最后修改人''',
+  `last_modified_date` datetime DEFAULT NULL COMMENT '最后修改时间',
+  `flag` char(1) COLLATE utf8_bin NOT NULL DEFAULT '1' COMMENT '''删除标识''',
+  `child_auth` varchar(1000) COLLATE utf8_bin DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name_UNIQUE` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+LOCK TABLES `authority` WRITE;
+/*!40000 ALTER TABLE `authority` DISABLE KEYS */;
+
+INSERT INTO `authority` (`id`, `name`, `intro`, `created_by`, `created_date`, `last_modified_by`, `last_modified_date`, `flag`, `child_auth`)
+VALUES
+	(1,X'415554485F50',X'E59586E59381E7AEA1E79086',X'63757272656E745F75736572','2017-02-27 14:26:28',NULL,NULL,X'31',NULL),
+	(2,X'50524F445543545F5155455259',X'E59586E59381E69FA5E8AFA2',X'63757272656E745F75736572','2017-02-27 14:26:37',X'63757272656E745F75736572','2017-02-27 14:32:29',X'31',NULL),
+	(5,X'524F4C455F4D4153544552',X'E69C80E9AB98E7AEA1E79086E59198',X'63757272656E745F75736572','2017-02-27 14:37:39',NULL,NULL,X'31',NULL),
+	(6,X'50524F445543545F515545525931',X'E59586E59381E69FA5E8AFA2',X'63757272656E745F75736572','2017-04-27 15:51:38',X'796F75796F753230343640676D61696C2E636F6D','2017-04-27 15:56:10',X'30',NULL),
+	(7,X'50524F445543545F515545525932',X'E59586E59381E69FA5E8AFA2',X'63757272656E745F75736572','2017-04-27 15:52:40',NULL,NULL,X'31',NULL),
+	(8,X'415554485F41444D494E',X'E69C80E9AB98E7AEA1E79086E59198',X'63757272656E745F75736572','2017-02-27 14:37:39',NULL,NULL,X'31',X'415554485F50');
+
+/*!40000 ALTER TABLE `authority` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# Dump of table department
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `department`;
+
+CREATE TABLE `department` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) NOT NULL COMMENT '名字',
+  `parent_id` bigint(20) DEFAULT NULL COMMENT '父节点',
+  `created_by` varchar(45) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '''创建人''',
+  `created_date` datetime DEFAULT NULL COMMENT '创建时间',
+  `last_modified_by` varchar(45) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '''最后修改人''',
+  `last_modified_date` datetime DEFAULT NULL COMMENT '最后修改时间',
+  `flag` char(1) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '1' COMMENT '''删除标识''',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+LOCK TABLES `department` WRITE;
+/*!40000 ALTER TABLE `department` DISABLE KEYS */;
+
+INSERT INTO `department` (`id`, `name`, `parent_id`, `created_by`, `created_date`, `last_modified_by`, `last_modified_date`, `flag`)
+VALUES
+	(1,'总部',0,X'796F7570656E67666569','2017-03-07 00:00:00',X'63757272656E742075736572','2017-03-13 14:31:32',X'31'),
+	(2,'保客云集',1,X'63757272656E742075736572','2017-03-09 18:20:10',NULL,NULL,X'31'),
+	(3,'保客云集1',1,X'63757272656E742075736572','2017-03-09 18:20:26',NULL,NULL,X'31'),
+	(4,'广州',-1,X'63757272656E742075736572','2017-04-27 16:18:34',X'63757272656E742075736572','2017-04-27 16:20:02',X'31');
+
+/*!40000 ALTER TABLE `department` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# Dump of table menu
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `menu`;
+
+CREATE TABLE `menu` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `name` varchar(255) DEFAULT NULL COMMENT '菜单名称',
+  `path` varchar(255) DEFAULT NULL COMMENT '请求的path',
+  `icon` varchar(255) DEFAULT NULL COMMENT '菜单图标',
+  `menu_type` int(11) DEFAULT NULL COMMENT '菜单类型 1 菜单 2 菜单组',
+  `authority` varchar(255) NOT NULL COMMENT '对应的权限名字',
+  `menu_img` varchar(255) DEFAULT NULL COMMENT '菜单对应图片地址，只有菜单组有',
+  `parent_id` bigint(20) DEFAULT NULL COMMENT '对应父节点',
+  `created_by` varchar(50) NOT NULL COMMENT '创建人',
+  `created_date` datetime NOT NULL COMMENT '创建时间',
+  `last_modified_by` varchar(50) DEFAULT NULL COMMENT '最后更新人',
+  `last_modified_date` datetime DEFAULT NULL COMMENT '最后更新时间',
+  `flag` char(1) DEFAULT '1' COMMENT '1表示可用 0表示删除  ',
+  `is_module` tinyint(1) NOT NULL DEFAULT 0,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='菜单';
+
+LOCK TABLES `menu` WRITE;
+/*!40000 ALTER TABLE `menu` DISABLE KEYS */;
+
+INSERT INTO `menu` (`id`, `name`, `path`, `icon`, `menu_type`, `authority`, `menu_img`, `parent_id`, `created_by`, `created_date`, `last_modified_by`, `last_modified_date`, `flag`, `is_module`)
+VALUES
+	(1,'功能导航','/','fa-home',2,'ROLE_ADMIN',NULL,0,'current_user','2017-03-13 15:50:46',NULL,NULL,'1',0),
+	(2,'首页','/','fa-home',1,'ROLE_ADMIN',NULL,1,'current_user','2017-03-13 15:51:24',NULL,NULL,'1',0),
+	(3,'热点话题','/','fa-home',2,'ROLE_ADMIN',NULL,0,'current_user','2017-03-13 15:56:43',NULL,NULL,'1',0),
+	(4,'话题列表','/','fa-home',1,'ROLE_ADMIN',NULL,3,'current_user','2017-03-13 16:18:56',NULL,NULL,'1',0),
+	(5,'新增话题','/','fa-home',1,'ROLE_ADMIN',NULL,3,'current_user','2017-03-13 16:19:34',NULL,NULL,'1',0),
+	(6,'产品管理','/','fa-home',2,'ROLE_ADMIN',NULL,0,'current_user','2017-03-13 16:20:37',NULL,NULL,'1',0),
+	(7,'产品列表','/','fa-home',1,'ROLE_ADMIN',NULL,6,'current_user','2017-03-13 16:20:52',NULL,NULL,'1',0),
+	(8,'订单保单','/','fa-home',2,'ROLE_ADMIN',NULL,0,'current_user','2017-03-13 16:21:28',NULL,NULL,'1',0),
+	(9,'手工录单','/','fa-home',1,'ROLE_ADMIN',NULL,8,'current_user','2017-03-13 16:21:44',NULL,NULL,'1',0),
+	(10,'活动发布','/','fa-home',2,'ROLE_ADMIN',NULL,0,'current_user','2017-03-13 16:22:28',NULL,NULL,'1',0),
+	(11,'资源列表','/','fa-home',1,'ROLE_ADMIN',NULL,10,'current_user','2017-03-13 16:22:55',NULL,NULL,'1',0),
+	(12,'活动列表','/','fa-home',1,'ROLE_ADMIN',NULL,10,'current_user','2017-03-13 16:23:04',NULL,NULL,'1',0),
+	(13,'新增活动资源','/','fa-home',1,'ROLE_ADMIN',NULL,10,'current_user','2017-03-13 16:23:15',NULL,NULL,'1',0),
+	(14,'公司管理','/','fa-home',2,'ROLE_ADMIN','https://gold-cdn.xitu.io/v3/static/img/logo.a7995ad.svg',0,'current_user','2017-03-13 16:23:34','current_user','2017-05-03 13:24:05','1',0),
+	(15,'公司列表','/','fa-home',1,'ROLE_ADMIN',NULL,14,'current_user','2017-03-13 16:23:49',NULL,NULL,'1',0),
+	(16,'热点话题4','/','fa-home',2,'ROLE_ADMIN',NULL,0,'current_user','2017-04-27 16:13:47','current_user','2017-05-03 13:16:27','1',0),
+	(17,'热点话题3','/','fa-home',2,'ROLE_ADMIN',NULL,0,'current_user','2017-04-27 16:14:39','current_user','2017-04-27 16:15:26','1',0);
+
+/*!40000 ALTER TABLE `menu` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# Dump of table role
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `role`;
+
+CREATE TABLE `role` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `name` varchar(45) COLLATE utf8_bin DEFAULT NULL COMMENT '角色名称',
+  `intro` varchar(100) COLLATE utf8_bin DEFAULT NULL COMMENT '角色描述',
+  `created_by` varchar(45) COLLATE utf8_bin DEFAULT NULL COMMENT '创建人',
+  `created_date` datetime DEFAULT NULL COMMENT '创建时间',
+  `last_modified_by` varchar(45) COLLATE utf8_bin DEFAULT NULL COMMENT '最后修改人',
+  `last_modified_date` datetime DEFAULT NULL COMMENT '最后修改时间',
+  `flag` char(1) COLLATE utf8_bin NOT NULL DEFAULT '1' COMMENT '删除标识',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name_UNIQUE` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+LOCK TABLES `role` WRITE;
+/*!40000 ALTER TABLE `role` DISABLE KEYS */;
+
+INSERT INTO `role` (`id`, `name`, `intro`, `created_by`, `created_date`, `last_modified_by`, `last_modified_date`, `flag`)
+VALUES
+	(12,X'726F6C655F61646D696E',X'E7AEA1E79086E59198E8A792E889B2',X'63757272656E742075736572','2017-02-24 16:50:04',X'63757272656E742075736572','2017-02-24 17:10:47',X'30'),
+	(13,X'61646D696E',X'E7AEA1E79086E59198E8A792E889B231',X'63757272656E742075736572','2017-02-24 17:10:19',X'63757272656E742075736572','2017-02-27 17:17:49',X'31'),
+	(14,X'61646D696E31',X'E7AEA1E79086E59198E8A792E889B232',X'63757272656E742075736572','2017-02-27 17:18:03',NULL,NULL,X'31'),
+	(15,X'484F545F544F50494331',X'E783ADE782B9E8AF9DE9A29831',X'63757272656E742075736572','2017-04-27 15:40:54',X'63757272656E742075736572','2017-04-27 15:42:40',X'30');
+
+/*!40000 ALTER TABLE `role` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# Dump of table role_authority
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `role_authority`;
+
+CREATE TABLE `role_authority` (
+  `role_id` bigint(20) NOT NULL,
+  `authority_id` int(11) NOT NULL,
+  PRIMARY KEY (`role_id`,`authority_id`),
+  KEY `fk_role_has_authority_role1_idx` (`role_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+LOCK TABLES `role_authority` WRITE;
+/*!40000 ALTER TABLE `role_authority` DISABLE KEYS */;
+
+INSERT INTO `role_authority` (`role_id`, `authority_id`)
+VALUES
+	(13,5),
+	(13,8),
+	(15,2),
+	(15,5),
+	(15,7);
+
+/*!40000 ALTER TABLE `role_authority` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# Dump of table user
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `user`;
+
+CREATE TABLE `user` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `show_name` varchar(45) COLLATE utf8_bin DEFAULT NULL COMMENT '''登录显示名称''',
+  `email` varchar(45) COLLATE utf8_bin DEFAULT NULL COMMENT '''用户名''',
+  `password` varchar(60) COLLATE utf8_bin NOT NULL COMMENT '''密码——加密后的''',
+  `department_id` bigint(20) DEFAULT NULL COMMENT '所属部门',
+  `activated` char(1) COLLATE utf8_bin DEFAULT '1' COMMENT '''是否活跃''',
+  `last_password_reset_date` datetime DEFAULT NULL COMMENT '最后一次修改密码的时间',
+  `created_by` varchar(45) COLLATE utf8_bin DEFAULT NULL COMMENT '''创建人''',
+  `created_date` datetime DEFAULT NULL COMMENT '创建时间',
+  `last_modified_by` varchar(45) COLLATE utf8_bin DEFAULT NULL COMMENT '''最后修改人''',
+  `last_modified_date` datetime DEFAULT NULL COMMENT '最后修改时间',
+  `flag` char(1) COLLATE utf8_bin NOT NULL DEFAULT '1' COMMENT '''删除标识''',
+  `is_app` char(1) COLLATE utf8_bin NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `email_UNIQUE` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+LOCK TABLES `user` WRITE;
+/*!40000 ALTER TABLE `user` DISABLE KEYS */;
+
+INSERT INTO `user` (`id`, `show_name`, `email`, `password`, `department_id`, `activated`, `last_password_reset_date`, `created_by`, `created_date`, `last_modified_by`, `last_modified_date`, `flag`, `is_app`)
+VALUES
+	(1003,X'796F7570656E67666569',X'796F75796F753230343640676D61696C2E636F6D',X'243261243130246A6142686557676B464B6E3031446373782F6648506577386366687645397A6A447A6A707A426E794D4F4536427A64687432436636',1,X'31',NULL,X'63757272656E742075736572','2017-02-24 10:41:52',NULL,NULL,X'31',X'30'),
+	(1014,X'E5B0A4E9B98FE9A39E31',X'796F7570656E676665694062616F6B6579756E3532342E636F6D',X'24326124313024544F466869435030337664553439465170507047532E55704B65473937304D6D36624A34714F357A3174795675317869696C656443',NULL,X'31',NULL,X'796F75796F753230343640676D61696C2E636F6D','2017-04-17 12:11:43',NULL,NULL,X'31',X'30'),
+	(1015,X'E5B0A4E9B98FE9A39E31',X'796F7570656E676665694062616F6B6579756E342E636F6D',X'243261243130244E696C5337522E773868772E69566634477878314B65354752646D6F2E79526354444C612E722E4F7375365A45396C6F474476636D',NULL,X'31',NULL,X'796F75796F753230343640676D61696C2E636F6D','2017-04-17 13:58:28',NULL,NULL,X'31',X'30'),
+	(1016,X'E5B0A4E9B98FE9A39E31',X'796F7570656E676665694062616F6B6579756E3432322E636F6D',X'243261243130244844445044426A684D4247743371544854357767674F57483855304F496B575772597A594B4D6B575A474977393269416730796B69',NULL,X'31',NULL,X'796F75796F753230343640676D61696C2E636F6D','2017-04-17 14:05:21',NULL,NULL,X'31',X'30'),
+	(1017,X'E5B0A4E9B98FE9A39E32',X'796F7570656E676665694062616F6B6579756E34323235353532322E636F6D',X'243261243130247237674A6B33677362384D726879337A66334C7567754E66746E5369374B67793752585265534852696F487A4D4B35706759547361',NULL,X'31',NULL,X'796F75796F753230343640676D61696C2E636F6D69','2017-04-17 14:14:04',X'796F75796F753230343640676D61696C2E636F6D','2017-04-17 14:39:19',X'31',X'30'),
+	(1018,X'E5B0A4E9B98FE9A39E32',X'796F7570656E676665694062616F6B6579756E343232353535322E636F6D',X'243261243130246A6E52645255682E4F71307857456446516752376365485439384964625877524B505A7A4E2F4F4F7A793573482F4B6B36526D5936',NULL,X'31',NULL,X'796F75796F753230343640676D61696C2E636F6D','2017-04-17 14:38:55',NULL,NULL,X'31',X'30'),
+	(1019,X'E5B0A4E9B98FE9A39E32',X'796F7570656E676665694062616F6B6579756E3234323235353532322E636F6D',X'243261243130246A6142686557676B464B6E3031446373782F6648506577386366687645397A6A447A6A707A426E794D4F4536427A64687432436636',NULL,X'31',NULL,X'796F75796F753230343640676D61696C2E636F6D','2017-04-17 14:49:16',NULL,NULL,X'31',X'31');
+
+/*!40000 ALTER TABLE `user` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# Dump of table user_role
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `user_role`;
+
+CREATE TABLE `user_role` (
+  `user_id` bigint(20) NOT NULL,
+  `role_id` bigint(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+LOCK TABLES `user_role` WRITE;
+/*!40000 ALTER TABLE `user_role` DISABLE KEYS */;
+
+INSERT INTO `user_role` (`user_id`, `role_id`)
+VALUES
+	(1003,13);
+
+/*!40000 ALTER TABLE `user_role` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

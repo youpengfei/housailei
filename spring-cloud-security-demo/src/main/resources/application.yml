@@ -1,0 +1,71 @@
+# ===================================================================
+# Spring Boot configuration.
+#
+# This configuration will be overridden by the Spring profile you use,
+# for example application-dev.yml if you use the "dev" profile.
+#
+# More information on profiles: http://www.jhipster.tech/profiles/
+# More information on configuration properties: http://www.jhipster.tech/common-application-properties/
+# ===================================================================
+
+# ===================================================================
+# Standard Spring Boot properties.
+# Full reference is available at:
+# http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
+# ===================================================================
+
+management:
+    security:
+        roles: ADMIN
+    context-path: /management
+    info:
+        git:
+            mode: full
+    health:
+        mail:
+            enabled: false # When using the MailService, configure an SMTP server and set this to true
+spring:
+    application:
+        name: myapplication
+    profiles:
+        # The commented value for `active` can be replaced with valid Spring profiles to load.
+        # Otherwise, it will be filled in by maven when building the WAR file
+        # Either way, it can be overridden by `--spring.profiles.active` value passed in the commandline or `-Dspring.profiles.active` set in `JAVA_OPTS`
+        active: #spring.profiles.active#
+    jackson:
+        serialization.write_dates_as_timestamps: false
+    messages:
+        basename: i18n/messages
+    mvc:
+        favicon:
+            enabled: false
+    thymeleaf:
+        mode: XHTML
+    datasource:
+      url: jdbc:mysql://localhost:3306/admin-auth
+      driver-class-name: com.mysql.jdbc.Driver
+      username: root
+      password:
+      hikari:
+        maximum-pool-size: 100
+        connection-test-query: select x
+security:
+    basic:
+        enabled: false
+
+server:
+    session:
+        cookie:
+            http-only: true
+
+showcase:
+    security:
+        authentication:
+            jwt:
+                secret: my-secret-token-to-change-in-production
+                # Token is valid 24 hours
+                token-validity-in-seconds: 86400
+                token-validity-in-seconds-for-remember-me: 2592000
+
+mybatis:
+    mapperLocations: classpath:sqlmap/**/*.xml

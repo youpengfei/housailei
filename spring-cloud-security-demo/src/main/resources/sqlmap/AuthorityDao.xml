@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.showcase.securitydemo.dao.AuthorityDao">
+    <select id="getAuthByUserId" parameterType="long"
+            resultMap="com.showcase.securitydemo.dao.base.BaseAuthorityDao.BaseResultMap">
+        SELECT
+        <include refid="com.showcase.securitydemo.dao.base.BaseAuthorityDao.Base_Column_List"/>
+        from authority,user_role,role_authority
+        where user_role.role_id=role_authority.role_id and authority.id=role_authority.authority_id and
+        user_role.user_id=#{userId}
+        and flag=1
+    </select>
+
+
+    <select id="getAuthByRoleId" parameterType="long"
+            resultMap="com.showcase.securitydemo.dao.base.BaseAuthorityDao.BaseResultMap">
+        SELECT
+           auth.`id`,
+           auth.`name`,
+           auth.`intro`,
+           auth.`created_by`,
+           auth.`created_date`,
+           auth.`last_modified_by`,
+           auth.`last_modified_date`,
+           auth.`flag`
+        from authority auth,role_authority ra
+        where auth.id=ra.authority_id and ra.role_id=#{roleId}
+    </select>
+
+
+    <insert id="batchInsertIntoAuthRole" parameterType="com.showcase.securitydemo.domain.UserRole">
+        INSERT INTO role_authority
+        ( role_id,authority_id )
+        VALUES
+        <foreach collection="authRoles" item="model" separator=",">
+            (
+            #{model.roleId},#{model.authorityId}
+            )
+        </foreach>
+    </insert>
+
+    <delete id="deleteAuthRoleByRoleId" parameterType="long">
+        delete from role_authority where role_id=#{roleId}
+    </delete>
+
+    <delete id="deleteAuthRoleByAuthId" parameterType="long">
+        delete from role_authority where authority_id=#{authId}
+    </delete>
+
+</mapper>

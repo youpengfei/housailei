@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.showcase.securitydemo.dao.RoleDao">
+    <select id="findRoleByUserId" parameterType="long"
+            resultMap="com.showcase.securitydemo.dao.base.BaseRoleDao.BaseResultMap">
+        SELECT
+        <include refid="com.showcase.securitydemo.dao.base.BaseRoleDao.Base_Column_List"/>
+        from role,user_role
+        where user_role.role_id=role.id and user_role.user_id=#{userId}
+    </select>
+
+    <insert id="batchInsertIntoUserRole" parameterType="com.showcase.securitydemo.domain.UserRole">
+        INSERT INTO user_role
+        ( user_id,role_id )
+        VALUES
+        <foreach collection="userRoles" item="model" separator=",">
+            (
+            #{model.userId},#{model.roleId}
+            )
+        </foreach>
+    </insert>
+
+    <delete id="deleteUserRoleByUserId" parameterType="long">
+        delete from user_role where user_id=#{userId}
+    </delete>
+
+    <delete id="deleteUserRoleByRoleId">
+        delete from user_role where role_id=#{roleId}
+    </delete>
+</mapper>

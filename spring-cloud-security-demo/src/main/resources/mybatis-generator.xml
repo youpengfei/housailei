@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+    <context id="mysqlgenerator" targetRuntime="MyBatis3">
+        <plugin type="com.itfsw.mybatis.generator.plugins.SelectOneByExamplePlugin"/>
+        <plugin type="com.itfsw.mybatis.generator.plugins.LimitPlugin"/>
+        <plugin type="com.itfsw.mybatis.generator.plugins.ModelBuilderPlugin"/>
+        <plugin type="com.itfsw.mybatis.generator.plugins.ExampleEnhancedPlugin"/>
+        <plugin type="com.itfsw.mybatis.generator.plugins.BatchInsertPlugin"/>
+        <plugin type="com.itfsw.mybatis.generator.plugins.ModelColumnPlugin"/>
+
+
+        <commentGenerator>
+            <property name="suppressAllComments" value="true"/>
+        </commentGenerator>
+
+        <!--数据库连接 -->
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://localhost:3306/admin-auth"
+                        userId="root"
+                        password="">
+        </jdbcConnection>
+        <javaTypeResolver>
+            <property name="forceBigDecimals" value="false"/>
+        </javaTypeResolver>
+        <!-- model package and location -->
+        <javaModelGenerator targetPackage="com.showcase.securitydemo.domain.base" targetProject="src/main/java">
+            <property name="enableSubPackages" value="true"/>
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+        <!-- mapping package and location -->
+        <sqlMapGenerator targetPackage="resources/sqlmap/base" targetProject="src/main" >
+            <property name="enableSubPackages" value="true"/>
+
+        </sqlMapGenerator>
+        <!-- dao package and location -->
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.showcase.securitydemo.dao.base"
+                             targetProject="src/main/java">
+            <property name="enableSubPackages" value="true"/>
+        </javaClientGenerator>
+        <!-- table name,  change tableName and domainObjectName  -->
+        <table tableName="user"
+               domainObjectName="User"
+               mapperName="BaseUserDao"
+               enableCountByExample="true"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+               selectByExampleQueryId="true">
+            <columnOverride column="activated" javaType="Boolean"/>
+            <columnOverride column="flag" javaType="Boolean"/>
+            <columnOverride column="is_app" javaType="Boolean"/>
+        </table>
+
+        <table tableName="role"
+               domainObjectName="Role"
+               mapperName="BaseRoleDao"
+               enableCountByExample="true"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+               selectByExampleQueryId="true">
+            <columnOverride column="flag" javaType="Boolean"/>
+        </table>
+
+        <table tableName="authority"
+               domainObjectName="Authority"
+               mapperName="BaseAuthorityDao"
+               enableCountByExample="true"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+               selectByExampleQueryId="true">
+            <columnOverride column="flag" javaType="Boolean"/>
+        </table>
+
+        <table tableName="menu"
+               domainObjectName="Menu"
+               mapperName="BaseMenuDao"
+               enableCountByExample="true"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+               selectByExampleQueryId="true">
+            <columnOverride column="flag" javaType="Boolean"/>
+            <columnOverride column="is_module" javaType="Boolean"/>
+        </table>
+
+        <table tableName="department"
+               domainObjectName="Department"
+               mapperName="BaseDepartmentDao"
+               enableCountByExample="true"
+               enableUpdateByExample="true"
+               enableDeleteByExample="true"
+               enableSelectByExample="true"
+               selectByExampleQueryId="true">
+            <columnOverride column="flag" javaType="Boolean"/>
+        </table>
+
+    </context>
+</generatorConfiguration>
