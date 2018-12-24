@@ -14,6 +14,31 @@
 # http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
 # ===================================================================
 
+eureka:
+    instance:
+        appname: security
+        instanceId: security:${spring.application.instance_id:${random.value}}
+        statusPageUrlPath: ${management.context-path}/info
+        healthCheckUrlPath: ${management.context-path}/health
+        prefer-ip-address: true
+        appGroupName: dev
+        hostname: pangaea.baokeyunguanjia.local
+    client:
+        enabled: true
+        healthcheck:
+            enabled: true
+        registerWithEureka: true
+        fetchRegistry: true
+        serviceUrl:
+            defaultZone: http://admin:admin@127.0.0.1:8761/eureka/
+ribbon:
+    ConnectTimeout: 30000
+    ReadTimeout: 60000
+    eureka:
+        enabled: true
+
+
+
 management:
     security:
         roles: ADMIN
